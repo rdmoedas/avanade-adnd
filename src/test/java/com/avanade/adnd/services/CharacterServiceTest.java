@@ -1,6 +1,7 @@
 package com.avanade.adnd.services;
 
 import com.avanade.adnd.model.Character;
+import com.avanade.adnd.payloads.CreateCharacterRequest;
 import com.avanade.adnd.repository.CharacterRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -27,9 +28,9 @@ class CharacterServiceTest {
     @DisplayName("Should insert character with no errors")
     void shouldInsertCharacterWithNoErrors() {
         // GIVEN
-        Character character = mock(Character.class);
+        CreateCharacterRequest createCharacterRequest = mock(CreateCharacterRequest.class);
         // WHEN
-        Assertions.assertDoesNotThrow(() -> characterService.insertCharacter(character));
+        Assertions.assertDoesNotThrow(() -> characterService.insertCharacter(createCharacterRequest));
         // THEN
         verify(characterRepository, times(1))
                 .save(any(Character.class));
