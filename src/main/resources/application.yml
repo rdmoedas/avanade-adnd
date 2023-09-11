@@ -13,19 +13,20 @@ spring:
     url: jdbc:postgresql://localhost:5432/adnd
     username: adnd
     password: adnd
-    continue-on-error: true
 
   application:
     name: store-ms
   jpa:
     open-in-view: false
     show-sql: true
-    format-sql: true
     hibernate:
       ddl-auto: create-drop
-
     database-plataform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
         jdbc:
           batch_size: 50
+        format-sql: true
+  sql:
+    init:
+      continue-on-error: true
