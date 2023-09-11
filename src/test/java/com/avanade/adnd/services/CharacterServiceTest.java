@@ -89,7 +89,7 @@ class CharacterServiceTest {
         when(characterRepository.findById(anyLong()))
                 .thenReturn(java.util.Optional.of(character));
         // WHEN
-        Assertions.assertDoesNotThrow(() -> characterService.deleteCharacter(character));
+        Assertions.assertDoesNotThrow(() -> characterService.deleteCharacterById(1L));
         // THEN
         verify(characterRepository, times(1))
                 .delete(any(Character.class));
