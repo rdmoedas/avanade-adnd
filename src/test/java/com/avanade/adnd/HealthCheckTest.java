@@ -18,7 +18,8 @@ class HealthCheckTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    void healthCheckShouldReturnOk() {
+    @DisplayName("Health check should return OK")
+    void healthCheckShouldReturnOk() throws Exception {
         String result = restTemplate.getForObject("http://localhost:" + port + "/health", String.class);
         assertThat(result).isEqualTo("OK");
     }
