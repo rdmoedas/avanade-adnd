@@ -1,6 +1,6 @@
 package com.avanade.adnd.payloads;
 
-import com.avanade.adnd.model.CharacterType;
+import com.avanade.adnd.model.enums.CharacterType;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateCharacterRequest(
