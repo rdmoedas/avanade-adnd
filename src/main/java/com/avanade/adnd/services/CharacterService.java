@@ -33,10 +33,11 @@ public class CharacterService {
     }
 
     public Character updateCharacter(String id, CreateCharacterRequest updateCharacterRequest) throws Exception {
-        Character character = characterRepository.findById(Long.parseLong(id))
-                .orElseThrow(() -> new NotFoundException("Character with id ${id} not found"));
+        Long characterId = Long.parseLong(id);
+        Character character = characterRepository.findById(characterId)
+                .orElseThrow(() -> new NotFoundException("Character with id ${characterId} not found"));
         character.setType(updateCharacterRequest.type());
-        character.setName(updateCharacterRequest.name());
+        character.setCategory(updateCharacterRequest.category());
         character.setHitPoints(updateCharacterRequest.hitPoints());
         character.setStrength(updateCharacterRequest.strength());
         character.setDefense(updateCharacterRequest.defense());

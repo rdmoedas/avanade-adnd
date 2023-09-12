@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record CreateCharacterRequest(
         @NotNull CharacterType type,
-        @NotNull String name,
+        @NotNull String category,
         @NotNull int hitPoints,
         @NotNull int strength,
         @NotNull int defense,
