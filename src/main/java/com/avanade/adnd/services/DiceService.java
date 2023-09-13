@@ -7,10 +7,6 @@ public class DiceService {
 
     private static Random random = new Random();
 
-    private DiceService() {
-        throw new IllegalStateException("Utility class");
-    }
-
     public static ArrayList<Integer> rollDices(int diceAmount, int diceSides) throws IllegalArgumentException {
         if(diceSides < 1) {
             throw new IllegalArgumentException("Number of faces must be greater than 0");
