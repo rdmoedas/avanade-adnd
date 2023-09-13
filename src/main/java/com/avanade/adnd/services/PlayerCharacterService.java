@@ -1,5 +1,7 @@
 package com.avanade.adnd.services;
 
+import com.avanade.adnd.exceptions.NotFoundException;
+import com.avanade.adnd.model.Character;
 import com.avanade.adnd.model.PlayerCharacter;
 import com.avanade.adnd.payloads.CreatePlayerCharacterRequest;
 import com.avanade.adnd.repository.PlayerCharacterRepository;
@@ -19,27 +21,37 @@ public class PlayerCharacterService {
         this.playerCharacterRepository = playerCharacterRepository;
     }
 
-    // create player character
     public PlayerCharacter insertPlayerCharacter(CreatePlayerCharacterRequest playerCharacter) throws Exception {
-        if (characterService.findCharacterById(playerCharacter.characterId()) == null) {
-            throw new Exception("Character with id ${playerCharacter.characterId()} not found");
-        }
+        Character character = this.characterService.findCharacterById(playerCharacter.characterId());
         PlayerCharacter newPlayerCharacter = new PlayerCharacter();
         newPlayerCharacter.setName(playerCharacter.name());
         newPlayerCharacter.setPlayerName(playerCharacter.playerName());
-        newPlayerCharacter.setCharacter(characterService.findCharacterById(playerCharacter.characterId()));
+        newPlayerCharacter.setCharacter(character);
         return playerCharacterRepository.save(newPlayerCharacter);
     }
 
-    // get all player characters
     public List<PlayerCharacter> findAllPlayerCharacters() {
         return playerCharacterRepository.findAll();
     }
 
-    // get one player character
     public PlayerCharacter findPlayerCharacterById(UUID id) throws Exception {
         return playerCharacterRepository.findById(id)
-                .orElseThrow(() -> new Exception("Player Character with id ${id} not found"));
+                .orElseThrow(() -> new NotFoundException("Player Character with id ${id} not found"));
     }
 
+    public PlayerCharacter updatePlayerCharacter(UUID id, CreatePlayerCharacterRequest updatePlayerCharacterRequest) throws Exception {
+        PlayerCharacter playerCharacter = playerCharacterRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Player Character with id ${id} not found"));
+        Character character = this.characterService.findCharacterById(updatePlayerCharacterRequest.characterId());
+        playerCharacter.setName(updatePlayerCharacterRequest.name());
+        playerCharacter.setPlayerName(updatePlayerCharacterRequest.playerName());
+        playerCharacter.setCharacter(character);
+        return playerCharacterRepository.save(playerCharacter);
+    }
+
+    public void deletePlayerCharacterById(UUID id) throws Exception {
+        PlayerCharacter playerCharacter = playerCharacterRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Player Character with id ${id} not found"));
+        playerCharacterRepository.deleteById(playerCharacter.getId());
+    }
 }
