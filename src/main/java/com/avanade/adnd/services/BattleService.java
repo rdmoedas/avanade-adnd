@@ -182,6 +182,7 @@ public class BattleService {
             }
         } else {
             lastLog.setPlayerCharacterHealthEndOfTurn(lastLog.getPlayerCharacterHealthStartOfTurn());
+            this.battleLogService.updateBattleLog(lastLog);
             responseMessage = "The enemy miss the attack!\nEnemy Attack Dice: " + enemyAtackDice + "\nPlayer Character Defense Dice: " + playerCharacterDefenseDice;
         }
         BattleLog updatedLastLog = this.getLastBattleLogByBattleId(battleId);
@@ -209,12 +210,16 @@ public class BattleService {
         }
     }
 
-    public BattleLog getLastBattleLogByBattleId(Long battleId) throws Exception {
+    public BattleLogResponse getLastBattleLogResponseByBattleId(Long battleId) throws Exception {
         return this.battleLogService.findLastBattleLogByBattleId(battleId);
     }
 
+    public BattleLog getLastBattleLogByBattleId(Long battleId) throws Exception {
+        return this.battleLogService.returnLastBattleLogWithBattleId(battleId);
+    }
+
     private BattleLog createNewTurn(Long battleId) throws Exception {
-        BattleLog lastTurn = this.getLastBattleLogByBattleId(battleId);
+        BattleLogResponse lastTurn = this.getLastBattleLogResponseByBattleId(battleId);
         Battle battle = this.findBattleById(battleId);
         CreateBattleLogRequest createBattleLogRequest = new CreateBattleLogRequest();
         if(battle.getInitiative() == Initiative.PLAYER_CHARACTER) {
@@ -223,9 +228,9 @@ public class BattleService {
             createBattleLogRequest.setStatus(TurnStatus.AWAITING_PLAYER_DEFENSE);
         }
         createBattleLogRequest.setBattleId(battleId);
-        createBattleLogRequest.setTurn(lastTurn.getTurn() + 1);
-        createBattleLogRequest.setPlayerCharacterHealthStartOfTurn(lastTurn.getPlayerCharacterHealthEndOfTurn());
-        createBattleLogRequest.setNonPlayerCharacterHealthStartOfTurn(lastTurn.getNonPlayerCharacterHealthEndOfTurn());
+        createBattleLogRequest.setTurn(lastTurn.turn() + 1);
+        createBattleLogRequest.setPlayerCharacterHealthStartOfTurn(lastTurn.playerCharacterHealthEndOfTurn());
+        createBattleLogRequest.setNonPlayerCharacterHealthStartOfTurn(lastTurn.nonPlayerCharacterHealthEndOfTurn());
         return this.battleLogService.createBattleLogWithRequest(createBattleLogRequest, battle);
     }
 
@@ -264,9 +269,9 @@ public class BattleService {
         BattleLog lastLog = this.getLastBattleLogByBattleId(battleId);
 
         ArrayList<Integer> attackDices = DiceService.rollDices(battle.getEnemy().getDiceAmount(), battle.getEnemy().getDiceSides());
-        Integer npcAttack = attackDices.stream().mapToInt(Integer::intValue).sum() + battle.getEnemyStrength();
-        lastLog.setNonPlayerCharacterAttackDamage(npcAttack);
-        Integer playerCharacterHealth = lastLog.getPlayerCharacterHealthStartOfTurn() - npcAttack;
+        Integer npmDamage = attackDices.stream().mapToInt(Integer::intValue).sum() + battle.getEnemyStrength();
+        lastLog.setNonPlayerCharacterAttackDamage(npmDamage);
+        Integer playerCharacterHealth = lastLog.getPlayerCharacterHealthStartOfTurn() - npmDamage;
         lastLog.setPlayerCharacterHealthEndOfTurn(playerCharacterHealth);
         String responseMessage;
         String playerStatus;
