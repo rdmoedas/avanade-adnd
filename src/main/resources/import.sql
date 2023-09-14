@@ -1,5 +1,3 @@
--- This file is used to import data into the database
-
 -- Inserting data into the character table
 INSERT INTO character ("type", "category", "hit_points", "strength",  "defense", "agility", "dice_amount", "dice_sides") VALUES ('HERO', 'Warrior', 20, 7, 5, 6, 1, 12);
 INSERT INTO character ("type", "category", "hit_points", "strength",  "defense", "agility", "dice_amount", "dice_sides") VALUES ('HERO', 'Barbarian', 21, 10, 2, 5, 2, 8);
