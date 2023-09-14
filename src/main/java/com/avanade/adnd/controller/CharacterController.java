@@ -4,6 +4,7 @@ import com.avanade.adnd.model.Character;
 import com.avanade.adnd.model.enums.CharacterType;
 import com.avanade.adnd.payloads.CreateCharacterRequest;
 import com.avanade.adnd.services.CharacterService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/characters")
+@Tag(name = "Character", description = "Character API")
 public class CharacterController {
 
     private final CharacterService characterService;
