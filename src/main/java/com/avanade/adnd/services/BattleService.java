@@ -10,6 +10,7 @@ import com.avanade.adnd.payloads.BattleLogResponse;
 import com.avanade.adnd.payloads.CreateBattleLogRequest;
 import com.avanade.adnd.payloads.CreateBattleRequest;
 import com.avanade.adnd.repository.BattleRepository;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,19 +35,32 @@ public class BattleService {
         this.characterService = characterService;
     }
 
-    public Battle createBattle(CreateBattleRequest createBattleRequest) throws Exception {
+    public Battle createBattle(@NotNull CreateBattleRequest createBattleRequest) throws Exception {
         Battle newBattle = new Battle();
         PlayerCharacter playerCharacter = this.playerCharacterService.findPlayerCharacterById(createBattleRequest.getPlayerCharacterId());
-        Character enemy = this.characterService.findCharacterById(createBattleRequest.getEnemyId());
-        if(enemy.getType() != CharacterType.MONSTER) {
-            throw new BattleCreationException("The enemy must be a monster");
-        }
-
+        Character enemy = this.getEnemy(createBattleRequest.getEnemyId());
         newBattle.setPlayerCharacter(playerCharacter);
         newBattle.setEnemy(enemy);
         newBattle.setStatus(BattleStatus.CREATED);
         newBattle.setInitiative(Initiative.WAITING_ROLL);
         return battleRepository.save(newBattle);
+    }
+
+    private Character getEnemy(Long characterId) throws Exception {
+        if (characterId == null) {
+            return this.findRandomEnemy();
+        } else {
+            return this.characterService.findCharacterById(characterId);
+        }
+    }
+
+    private Character findRandomEnemy() throws BattleException {
+        List<Character> monsters = this.characterService.findAllByType(CharacterType.MONSTER);
+        if(monsters.isEmpty()) {
+            throw new BattleException("There are no monsters in the database");
+        }
+        int randomIndex = DiceService.randomIntFromRange(0, monsters.size() - 1);
+        return monsters.get(randomIndex);
     }
 
     public List<Battle> findAllBattles() {

@@ -26,4 +26,11 @@ public class DiceService {
         }
         return response;
     }
+
+    public static int randomIntFromRange(int min, int max) throws IllegalArgumentException {
+        if(min > max) {
+            throw new IllegalArgumentException("Min must be less than max");
+        }
+        return random.nextInt(max - min + 1) + min;
+    }
 }
