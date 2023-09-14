@@ -27,19 +27,19 @@ public class BattleController {
     }
 
     @Tag(name = "Battle", description = "Get All Battles")
-    @RequestMapping(value = "/info/", method = RequestMethod.GET)
+    @GetMapping(value = "/info/")
     public List<Battle> findAllBattles() {
         return this.battleService.findAllBattles();
     }
 
     @Tag(name = "Battle", description = "Get Battle By Id")
-    @RequestMapping(value = "/info/{battleId}", method = RequestMethod.GET)
+    @GetMapping(value = "/info/{battleId}")
     public Battle findBattleById(@PathVariable String battleId) throws Exception {
         return this.battleService.findBattleById(Long.valueOf(battleId));
     }
 
-    @Tag(name = "Battle", description = "Get All Battles For Player Character")
-    @RequestMapping(value = "/playerCharacter/{playerCharacterId}", method = RequestMethod.GET)
+    @Tag(name = "Battle", description = "Get All Battles")
+    @GetMapping(value = "/playerCharacter/{playerCharacterId}")
     public List<Battle> findAllBattlesForPlayerCharacter(@PathVariable String playerCharacterId) {
         return this.battleService.findAllBattlesForPlayerCharacter(UUID.fromString(playerCharacterId));
     }
@@ -57,31 +57,31 @@ public class BattleController {
     }
 
     @Tag(name = "Battle", description = "Roll Initiative for a new Battle")
-    @RequestMapping(value = "/{battleId}/rollInitiative", method = RequestMethod.GET)
+    @GetMapping(value = "/{battleId}/rollInitiative")
     public String rollInitiative(@PathVariable String battleId) throws Exception {
         return this.battleService.rollInitiative(Long.valueOf(battleId));
     }
 
     @Tag(name = "Battle", description = "Get Last Battle Log")
-    @RequestMapping(value = "/{battleId}/get-last-log", method = RequestMethod.GET)
+    @GetMapping(value = "/{battleId}/get-last-log")
     public BattleLogResponse getLastBattleLog(@PathVariable String battleId) throws Exception {
         return this.battleService.getLastBattleLogResponseByBattleId(Long.valueOf(battleId));
     }
 
     @Tag(name = "Battle", description = "Make Attack")
-    @RequestMapping(value = "/{battleId}/make-attack", method = RequestMethod.GET)
+    @GetMapping(value = "/{battleId}/make-attack")
     public String makeAttack(@PathVariable String battleId) throws Exception {
         return this.battleService.makePlayerCharacterAttack(Long.valueOf(battleId));
     }
 
     @Tag(name = "Battle", description = "Make Defense")
-    @RequestMapping(value = "/{battleId}/defend", method = RequestMethod.GET)
+    @GetMapping(value = "/{battleId}/defend")
     public String defend(@PathVariable String battleId) throws Exception {
         return this.battleService.makePlayerCharacterDefense(Long.valueOf(battleId));
     }
 
     @Tag(name = "Battle", description = "Calculate Attack Damage")
-    @RequestMapping(value = "/{battleId}/damage", method = RequestMethod.GET)
+    @GetMapping(value = "/{battleId}/damage")
     public String damage(@PathVariable String battleId) throws Exception {
         return this.battleService.calculateAttackDamage(Long.valueOf(battleId));
     }
