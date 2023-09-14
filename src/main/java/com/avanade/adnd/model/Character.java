@@ -15,7 +15,7 @@ public class Character {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "varchar(15)")
     private CharacterType type;
 
     @Column(nullable = false)
