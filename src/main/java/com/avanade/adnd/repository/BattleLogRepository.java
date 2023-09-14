@@ -13,6 +13,6 @@ public interface BattleLogRepository extends JpaRepository<BattleLog, UUID> {
 
     List<BattleLog> findAllByBattleId(Long battleId);
 
-    @Query(value = "SELECT * FROM battle_log WHERE battle_id = ?1 ORDER BY turn DESC LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT bl FROM BattleLog bl JOIN FETCH bl.battle b WHERE b.id = ?1 ORDER BY bl.turn DESC LIMIT 1")
     BattleLog findLastBattleLogByBattleId(Long battleId);
 }
