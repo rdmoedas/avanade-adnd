@@ -1,7 +1,7 @@
 package com.avanade.adnd.controller;
 
 import com.avanade.adnd.model.Battle;
-import com.avanade.adnd.model.BattleLog;
+import com.avanade.adnd.payloads.BattleLogResponse;
 import com.avanade.adnd.payloads.CreateBattleRequest;
 import com.avanade.adnd.services.BattleService;
 import org.springframework.web.bind.annotation.*;
@@ -54,8 +54,8 @@ public class BattleController {
     }
 
     @RequestMapping(value = "/{battleId}/get-last-log")
-    public BattleLog getLastBattleLog(@PathVariable String battleId) throws Exception {
-        return this.battleService.getLastBattleLogByBattleId(Long.valueOf(battleId));
+    public BattleLogResponse getLastBattleLog(@PathVariable String battleId) throws Exception {
+        return this.battleService.getLastBattleLogResponseByBattleId(Long.valueOf(battleId));
     }
 
     @RequestMapping(value = "/{battleId}/make-attack")
