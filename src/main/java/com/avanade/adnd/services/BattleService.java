@@ -1,9 +1,6 @@
 package com.avanade.adnd.services;
 
-import com.avanade.adnd.exceptions.BattleCreationException;
-import com.avanade.adnd.exceptions.InitiativeAlreadyDecidedException;
-import com.avanade.adnd.exceptions.InvalidRequestException;
-import com.avanade.adnd.exceptions.NotFoundException;
+import com.avanade.adnd.exceptions.*;
 import com.avanade.adnd.model.Battle;
 import com.avanade.adnd.model.BattleLog;
 import com.avanade.adnd.model.Character;
@@ -62,7 +59,7 @@ public class BattleService {
         return battleRepository.findAllByPlayerCharacterId(playerId);
     }
 
-    public Battle findBattleById(Long battleId) throws Exception {
+    public Battle findBattleById(Long battleId) throws NotFoundException {
         return battleRepository.findById(battleId)
                 .orElseThrow(() -> new NotFoundException("Battle with id ${battleId} not found"));
     }
@@ -72,7 +69,6 @@ public class BattleService {
                 .orElseThrow(() -> new Exception("Battle with id ${id} not found"));
         battleToUpdate.setPlayerCharacter(battle.getPlayerCharacter());
         battleToUpdate.setEnemy(battle.getEnemy());
-        battleToUpdate.setBattleLogs(battle.getBattleLogs());
         battleToUpdate.setStatus(battle.getStatus());
         battleToUpdate.setInitiative(battle.getInitiative());
         return battleRepository.save(battleToUpdate);
@@ -82,7 +78,7 @@ public class BattleService {
         return battleRepository.save(battle);
     }
 
-    public void deleteBattleById(Long battleId) throws Exception {
+    public void deleteBattleById(Long battleId) throws NotFoundException {
         Battle battle = battleRepository.findById(battleId)
                 .orElseThrow(() -> new NotFoundException("Battle with id ${battleId} not found"));
         battleRepository.deleteById(battle.getId());
@@ -113,7 +109,7 @@ public class BattleService {
         createBattleLogRequest.setTurn(1);
         createBattleLogRequest.setPlayerCharacterHealthStartOfTurn(battle.getPlayerHitPoints());
         createBattleLogRequest.setNonPlayerCharacterHealthStartOfTurn(battle.getEnemyHitPoints());
-        this.battleLogService.createBattleLog(createBattleLogRequest, battle);
+        this.battleLogService.createBattleLogWithRequest(createBattleLogRequest, battle);
 
         return "Player Initiative Roll: " + playerInitiativeRoll + "\nEnemy Initiative Roll: " + enemyInitiativeRoll + "\nInitiative: " + battle.getInitiative();
     }
@@ -162,13 +158,13 @@ public class BattleService {
         BattleLog lastLog = this.getLastBattleLogByBattleId(battleId);
         lastLog.setNonPlayerCharacterAttackDice(enemyAtackDice);
         lastLog.setPlayerCharacterDefenseDice(playerCharacterDefenseDice);
+        this.battleLogService.updateBattleLog(lastLog);
         String responseMessage;
         ArrayList<String> npcDamageResponse;
         if (enemyAttack > playerCharacterDefense) {
             responseMessage = "The enemy hit you!\nEnemy Attack Dice: " + enemyAtackDice + "\nPlayer Character Defense Dice: " + playerCharacterDefenseDice;
             npcDamageResponse = this.calculateNonPlayerCharacterDamage(battleId);
             if(npcDamageResponse.get(1).equals("dead")) {
-                this.battleLogService.updateBattleLog(lastLog);
                 responseMessage += "\n" + npcDamageResponse.get(0);
                 return responseMessage;
             }
@@ -176,7 +172,6 @@ public class BattleService {
             lastLog.setPlayerCharacterHealthEndOfTurn(lastLog.getPlayerCharacterHealthStartOfTurn());
             responseMessage = "The enemy miss the attack!\nEnemy Attack Dice: " + enemyAtackDice + "\nPlayer Character Defense Dice: " + playerCharacterDefenseDice;
         }
-        this.battleLogService.updateBattleLog(lastLog);
         BattleLog updatedLastLog = this.getLastBattleLogByBattleId(battleId);
         if(updatedLastLog.getPlayerCharacterAttackDice() != null) {
             updatedLastLog.setStatus(TurnStatus.FINISHED);
@@ -190,15 +185,15 @@ public class BattleService {
     }
 
     private void checkIfPlayerCanMakeAction(Battle battle, TurnStatus turnStatus) throws Exception {
-        if(battle.getStatus() == BattleStatus.PLAYER_CHARACTER_LOST && battle.getStatus() == BattleStatus.PLAYER_CHARACTER_WON) {
-            throw new InvalidRequestException("Battle is finished");
+        if(battle.getStatus() == BattleStatus.PLAYER_CHARACTER_LOST || battle.getStatus() == BattleStatus.PLAYER_CHARACTER_WON) {
+            throw new BattleException("Battle is finished");
         }
         BattleLog lastLog = this.getLastBattleLogByBattleId(battle.getId());
         if(lastLog.getStatus() == TurnStatus.FINISHED) {
-            throw new InvalidRequestException("Turn is already finished");
+            throw new BattleException("Turn is already finished");
         }
         if(lastLog.getStatus() != turnStatus) {
-            throw new InvalidRequestException("Player can't " + turnStatus.toString().toLowerCase() + " now, try other action");
+            throw new BattleException("Player can't " + turnStatus.getDescription() + " now, try other action");
         }
     }
 
@@ -219,7 +214,7 @@ public class BattleService {
         createBattleLogRequest.setTurn(lastTurn.getTurn() + 1);
         createBattleLogRequest.setPlayerCharacterHealthStartOfTurn(lastTurn.getPlayerCharacterHealthEndOfTurn());
         createBattleLogRequest.setNonPlayerCharacterHealthStartOfTurn(lastTurn.getNonPlayerCharacterHealthEndOfTurn());
-        return this.battleLogService.createBattleLog(createBattleLogRequest, battle);
+        return this.battleLogService.createBattleLogWithRequest(createBattleLogRequest, battle);
     }
 
     public String calculateAttackDamage(Long battleId) throws Exception {
