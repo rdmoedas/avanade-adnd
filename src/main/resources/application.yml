@@ -17,12 +17,12 @@ spring:
     password: adnd
 
   application:
-    name: store-ms
+    name: avanade-adnd
   jpa:
     open-in-view: false
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database-plataform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
