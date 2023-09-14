@@ -20,7 +20,7 @@ public class BattleLog {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonProperty()
     private Battle battle;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private int turn;
     @Enumerated(EnumType.STRING)
     private TurnStatus status;
