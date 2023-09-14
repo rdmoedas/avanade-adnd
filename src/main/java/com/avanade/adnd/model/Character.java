@@ -1,5 +1,6 @@
 package com.avanade.adnd.model;
 
+import com.avanade.adnd.model.enums.CharacterType;
 import com.avanade.adnd.payloads.CreateCharacterRequest;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -14,11 +15,11 @@ public class Character {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "varchar(15)")
     private CharacterType type;
 
     @Column(nullable = false)
-    private String name;
+    private String category;
 
     @Column(nullable = false)
     private int hitPoints;
@@ -43,7 +44,7 @@ public class Character {
 
     public Character(CreateCharacterRequest character) {
         this.type = character.type();
-        this.name = character.name();
+        this.category = character.category();
         this.hitPoints = character.hitPoints();
         this.strength = character.strength();
         this.defense = character.defense();
