@@ -64,12 +64,16 @@ public class BattleLogService {
                 .toList();
     }
 
-    public BattleLog findLastBattleLogByBattleId(Long battleId) {
-        return battleLogRepository.findLastBattleLogByBattleId(battleId);
+    public BattleLogResponse findLastBattleLogByBattleId(Long battleId) {
+        return battleLogRepository.findLastBattleLogByBattleId(battleId).toResponse();
     }
 
     public BattleLogResponse findBattleLogById(UUID id) throws Exception {
         return battleLogRepository.findById(id).orElseThrow(() -> new NotFoundException("BattleLog not found")).toResponse();
+    }
+
+    public BattleLog returnLastBattleLogWithBattleId(Long battleId) {
+        return battleLogRepository.findLastBattleLogByBattleId(battleId);
     }
 
     public BattleLog updateBattleLogUsingId(UUID battleLogId, BattleLog battleLog) throws Exception {
