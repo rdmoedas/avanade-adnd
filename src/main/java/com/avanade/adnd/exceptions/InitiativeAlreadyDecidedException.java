@@ -8,4 +8,5 @@ public class InitiativeAlreadyDecidedException extends RuntimeException {
     public InitiativeAlreadyDecidedException(){
         super("Initiative already decided");
     }
+
 }

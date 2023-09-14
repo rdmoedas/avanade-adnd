@@ -10,4 +10,9 @@ public class NotFoundException extends RuntimeException {
     public NotFoundException(String entityNotFound){
         this.entityNotFound = entityNotFound;
     }
+
+    @Override
+    public String getMessage() {
+        return entityNotFound;
+    }
 }

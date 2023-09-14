@@ -4,15 +4,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class InvalidRequestException extends RuntimeException {
-    final String invalidRequest;
+public class BattleException extends Exception {
 
-    public InvalidRequestException(String invalidRequest){
-        this.invalidRequest = invalidRequest;
+    private final String message;
+
+    public BattleException(String message){
+        this.message = message;
     }
 
     @Override
     public String getMessage() {
-        return invalidRequest;
+        return message;
     }
 }
