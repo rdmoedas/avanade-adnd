@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @Entity
@@ -23,9 +21,6 @@ public class Battle {
 
     @ManyToOne
     private Character enemy;
-
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<BattleLog> battleLogs;
 
     @Enumerated(EnumType.STRING)
     private BattleStatus status;
