@@ -7,6 +7,7 @@ import java.util.UUID;
 public record BattleLogResponse(
     UUID id,
     Long battleId,
+    Integer turn,
     TurnStatus turnStatus,
     Integer playerCharacterAttackDice,
     Integer playerCharacterDefenseDice,
