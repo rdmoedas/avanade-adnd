@@ -96,7 +96,7 @@ public class BattleService {
         battleRepository.deleteById(battle.getId());
     }
 
-    public String rollInitiative(Long battleId) throws Exception {
+    public String rollInitiative(Long battleId) throws InitiativeAlreadyDecidedException {
         Battle battle = this.findBattleById(battleId);
         if(battle.getInitiative() != Initiative.WAITING_ROLL) {
             throw new InitiativeAlreadyDecidedException();
@@ -172,7 +172,7 @@ public class BattleService {
         lastLog.setPlayerCharacterDefenseDice(playerCharacterDefenseDice);
         this.battleLogService.updateBattleLog(lastLog);
         String responseMessage;
-        ArrayList<String> npcDamageResponse;
+        List<String> npcDamageResponse;
         if (enemyAttack > playerCharacterDefense) {
             responseMessage = "The enemy hit you!\nEnemy Attack Dice: " + enemyAtackDice + "\nPlayer Character Defense Dice: " + playerCharacterDefenseDice;
             npcDamageResponse = this.calculateNonPlayerCharacterDamage(battleId);
@@ -259,7 +259,7 @@ public class BattleService {
         return responseMessage;
     }
 
-    public ArrayList<String> calculateNonPlayerCharacterDamage(Long battleId) throws Exception {
+    public List<String> calculateNonPlayerCharacterDamage(Long battleId) throws Exception {
         Battle battle = this.findBattleById(battleId);
         BattleLog lastLog = this.getLastBattleLogByBattleId(battleId);
 
@@ -281,7 +281,7 @@ public class BattleService {
             playerStatus = PlayerCharacterStatus.ALIVE.toString();
         }
         this.battleLogService.updateBattleLog(lastLog);
-        ArrayList<String> response = new ArrayList<>();
+        List<String> response = new ArrayList<>();
         response.add(responseMessage);
         response.add(playerStatus);
         return response;
