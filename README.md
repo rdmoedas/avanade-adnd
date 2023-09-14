@@ -41,6 +41,15 @@ O fluxo do jogo foi mapeado para oferecer uma visão geral do funcionamento do s
 
 ![fluxo-adnd.png](..%2F..%2F..%2F..%2F..%2FUsers%2FRdm%2FDesktop%2Ffluxo-adnd.png)
 
+Como funciona o fluxo do jogo:
+1. O usuário cria um personagem ou escolhe um personagem existente.
+2. O usuário cria uma batalha com o personagem escolhido, caso ele queira ele pode escolher um monstro como inimigo, se não escolher o sistema irá sortear um.
+3. Com a batalha criada o jogador precisa fazer o teste de iniciativa, ele vai determinar quem ataca primeiro.
+4. Se o jogador ganhar ele pode realizar o ataque, e se acertar ele deve calcular o dano causado.
+5. Se perder ele devera realizar uma defesa, se o monstro acertar ele o monstro vai realizar um ataque.
+6. Caso alguem fique com vida igual ou menor que 0 a batalha acaba e o vencedor é declarado.
+7. Se os dois continuam vivos, o turno acaba e o processo se repete.
+
 ## Como rodar o projeto
 - Clone o repositório
 - Caso tenha o docker instalado rode o comando `docker-compose up -d` na raiz do projeto para subir o banco de dados Postgres na porta 5432 e uma imagem docker do backend na porta 9080. 
