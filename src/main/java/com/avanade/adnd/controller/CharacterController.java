@@ -25,8 +25,8 @@ public class CharacterController {
     }
 
     @GetMapping(value = "/")
-    List<Character> getCharacters(Pageable pageable) {
-        return characterService.findAllCharacters(pageable);
+    List<Character> getCharacters() {
+        return characterService.findAllCharacters();
     }
 
     @GetMapping(value = "/monster")

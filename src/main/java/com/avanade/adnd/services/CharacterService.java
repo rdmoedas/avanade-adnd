@@ -24,8 +24,8 @@ public class CharacterService {
         return characterRepository.save(newCharacter);
     }
 
-    public List<Character> findAllCharacters(Pageable pageable) {
-        return characterRepository.findAll(pageable).getContent();
+    public List<Character> findAllCharacters() {
+        return characterRepository.findAll();
     }
 
     public List<Character> findAllByType(CharacterType type) {
