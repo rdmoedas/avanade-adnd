@@ -2,6 +2,7 @@ package com.avanade.adnd.services;
 
 import com.avanade.adnd.exceptions.NotFoundException;
 import com.avanade.adnd.model.Character;
+import com.avanade.adnd.model.enums.CharacterType;
 import com.avanade.adnd.payloads.CreateCharacterRequest;
 import com.avanade.adnd.repository.CharacterRepository;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,10 @@ public class CharacterService {
 
     public List<Character> findAllCharacters(Pageable pageable) {
         return characterRepository.findAll(pageable).getContent();
+    }
+
+    public List<Character> findAllByType(CharacterType type) {
+        return characterRepository.findAllByType(type);
     }
 
     public Character findCharacterById(Long id) throws Exception {
