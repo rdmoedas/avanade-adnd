@@ -164,8 +164,8 @@ public class BattleService {
         if (enemyAttack > playerCharacterDefense) {
             responseMessage = "The enemy hit you!\nEnemy Attack Dice: " + enemyAtackDice + "\nPlayer Character Defense Dice: " + playerCharacterDefenseDice;
             npcDamageResponse = this.calculateNonPlayerCharacterDamage(battleId);
-            if(npcDamageResponse.get(1).equals("dead")) {
-                responseMessage += "\n" + npcDamageResponse.get(0);
+            responseMessage += "\n" + npcDamageResponse.get(0);
+            if(npcDamageResponse.get(1).equals(PlayerCharacterStatus.DEAD.toString())) {
                 return responseMessage;
             }
         } else {
@@ -262,11 +262,11 @@ public class BattleService {
             battle.setStatus(BattleStatus.PLAYER_CHARACTER_LOST);
             lastLog.setStatus(TurnStatus.FINISHED);
             this.updateBattle(battle);
-            responseMessage = "The enemy cause " + npcAttack + " damage to you, reducing your HP from " + lastLog.getPlayerCharacterHealthStartOfTurn() + " to " + playerCharacterHealth + "\nYou lost the battle!";
-            playerStatus = "dead";
+            responseMessage = "The enemy cause " + npmDamage + " damage to you, reducing your HP from " + lastLog.getPlayerCharacterHealthStartOfTurn() + " to " + playerCharacterHealth + "\nYou lost the battle!";
+            playerStatus = PlayerCharacterStatus.DEAD.toString();
         } else {
-            responseMessage = "The enemy cause " + npcAttack + " damage to you, reducing your HP from " + lastLog.getPlayerCharacterHealthStartOfTurn() + " to " + playerCharacterHealth;
-            playerStatus = "alive";
+            responseMessage = "The enemy cause " + npmDamage + " damage to you, reducing your HP from " + lastLog.getPlayerCharacterHealthStartOfTurn() + " to " + playerCharacterHealth;
+            playerStatus = PlayerCharacterStatus.ALIVE.toString();
         }
         this.battleLogService.updateBattleLog(lastLog);
         ArrayList<String> response = new ArrayList<>();
