@@ -5,6 +5,8 @@ server:
   compression:
     mime-types:
     - application/json
+  error:
+    include-stacktrace: on_param
 
 spring:
   main:
@@ -20,7 +22,7 @@ spring:
     open-in-view: false
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     database-plataform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
