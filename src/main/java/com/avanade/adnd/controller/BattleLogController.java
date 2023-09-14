@@ -38,8 +38,7 @@ public class BattleLogController {
 
     @RequestMapping("/battle/{battleId}/last")
     public BattleLogResponse findLastBattleLogByBattleId(@PathVariable String battleId) throws Exception {
-        BattleLog battleLog = this.battleLogService.findLastBattleLogByBattleId(Long.valueOf(battleId));
-        return battleLog.toResponse();
+        return this.battleLogService.findLastBattleLogByBattleId(Long.valueOf(battleId));
     }
 
     @PostMapping(value = "/")
