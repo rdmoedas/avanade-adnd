@@ -20,19 +20,16 @@ import java.util.UUID;
 @Service
 public class BattleService {
 
+    private final BattleLogService battleLogService;
+    private final PlayerCharacterService playerCharacterService;
+    private final CharacterService characterService;
     private final BattleRepository battleRepository;
 
-    private final BattleLogService battleLogService;
-
-    private final PlayerCharacterService playerCharacterService;
-
-    private final CharacterService characterService;
-
-    public BattleService(BattleRepository battleRepository, BattleLogService battleLogService, PlayerCharacterService playerCharacterService, CharacterService characterService) {
-        this.battleRepository = battleRepository;
+    public BattleService(BattleLogService battleLogService, PlayerCharacterService playerCharacterService, CharacterService characterService, BattleRepository battleRepository) {
         this.battleLogService = battleLogService;
         this.playerCharacterService = playerCharacterService;
         this.characterService = characterService;
+        this.battleRepository = battleRepository;
     }
 
     public Battle createBattle(@NotNull CreateBattleRequest createBattleRequest) throws Exception {
