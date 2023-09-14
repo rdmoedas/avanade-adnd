@@ -39,6 +39,7 @@ public class BattleLog {
         return new BattleLogResponse(
             this.id,
             this.battle.getId(),
+            this.turn,
             this.status,
             this.playerCharacterAttackDice,
             this.playerCharacterDefenseDice,
