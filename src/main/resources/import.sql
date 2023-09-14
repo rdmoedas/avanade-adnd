@@ -7,7 +7,6 @@ INSERT INTO character ("type", "category", "hit_points", "strength",  "defense",
 INSERT INTO character ("type", "category", "hit_points", "strength",  "defense", "agility", "dice_amount", "dice_sides") VALUES ('MONSTER', 'Orc', 42, 7, 1, 2, 3, 4);
 INSERT INTO character ("type", "category", "hit_points", "strength",  "defense", "agility", "dice_amount", "dice_sides") VALUES ('MONSTER', 'Giant', 34, 10, 4, 4, 2, 6);
 INSERT INTO character ("type", "category", "hit_points", "strength",  "defense", "agility", "dice_amount", "dice_sides") VALUES ('MONSTER', 'Werewolf', 34, 7, 4, 7, 2, 4);
-INSERT INTO character ("type", "category", "hit_points", "strength",  "defense", "agility", "dice_amount", "dice_sides") VALUES ('MONSTER', 'Slime', 30, 2, 2, 2, 2, 4);
 
 -- Inserting data into the player_character table
 INSERT INTO player_character (id, name, player_name, character_id) VALUES ('acc19955-ceca-420b-ae2f-fbcf7d9dcaec', 'Battlehammer', 'Rodolfo', 1);
