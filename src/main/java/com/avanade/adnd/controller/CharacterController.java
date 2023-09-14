@@ -1,6 +1,7 @@
 package com.avanade.adnd.controller;
 
 import com.avanade.adnd.model.Character;
+import com.avanade.adnd.model.enums.CharacterType;
 import com.avanade.adnd.payloads.CreateCharacterRequest;
 import com.avanade.adnd.services.CharacterService;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,16 @@ public class CharacterController {
     @GetMapping(value = "/")
     List<Character> getCharacters(Pageable pageable) {
         return characterService.findAllCharacters(pageable);
+    }
+
+    @GetMapping(value = "/monster")
+    List<Character> getCharactersMonster() {
+        return characterService.findAllByType(CharacterType.MONSTER);
+    }
+
+    @GetMapping(value = "/hero")
+    List<Character> getCharactersHero() {
+        return characterService.findAllByType(CharacterType.HERO);
     }
 
     @GetMapping("/{id}")
