@@ -39,7 +39,7 @@ A estrutura de dados do projeto foi cuidadosamente projetada para garantir a efi
 
 O fluxo do jogo foi mapeado para oferecer uma visão geral do funcionamento do sistema.
 
-![fluxo-adnd.png](..%2F..%2F..%2F..%2F..%2FUsers%2FRdm%2FDesktop%2Ffluxo-adnd.png)
+![fluxo-adnd.png](fluxo-adnd.png)
 
 Como funciona o fluxo do jogo:
 1. O usuário cria um personagem ou escolhe um personagem existente.
